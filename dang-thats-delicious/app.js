@@ -1,5 +1,8 @@
+// Import Express, our Framework for using Node
 const express = require('express');
+// Import Session Handling
 const session = require('express-session');
+// How we will interact with MongDB
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 const path = require('path');

@@ -1,6 +1,37 @@
+# Learn Node Course
+
+## Module 01: Introduction And Setup
+
+### 01: Getting Setup
+
+### 02: Setting Up MongoDB
+
+I had to do this locally because the WiFi at work is weird
+
+Install Compass for MongoDB
+
+[How to Install MongoDB](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/)
+
+```bash
+brew tap mongodb/brew
+brew install mongodb-community@4.2
+```
+
+To run MongoDB Locally:
+
+```bash
+brew services start mongodb-community@4.2
+```
+
+### 03: Starter Files and Environmental Variables
+
+- Resume at 04:16
+
+----
+
 [![](http://wes.io/kH9O/wowwwwwwwww.jpg)](https://LearnNode.com)
 
-# Learn Node Starter Files + Stepped Solutions
+## Learn Node Starter Files + Stepped Solutions
 
 These are the starter files and stepped solutions to accompany the LearnNode.com course.
 
@@ -8,7 +39,7 @@ You'll start your application in the `starter-files` directory — feel free to 
 
 If you need help, each folder number corresponds with where you should be at the *start* of a video. So if you are having trouble with video **24**, look to folder **25** for the answer.
 
-The stepped solutions are meant for you to apply on top of your existing code - they don't stand on their own. 
+The stepped solutions are meant for you to apply on top of your existing code - they don't stand on their own.
 
 Not all videos have a solution as their changes aren't significant enough.
 
@@ -28,7 +59,7 @@ Enjoy!
 
 ### The Google Maps API key isn't working
 
-The course might have hit a limit with the API key — if this is the case you need to sign up for your own API key over at <https://developers.google.com/maps/documentation/javascript/usage>. You will need to enable static maps for your API key. [Here is a quick video on how to do this](http://wes.io/khGn). 
+The course might have hit a limit with the API key — if this is the case you need to sign up for your own API key over at <https://developers.google.com/maps/documentation/javascript/usage>. You will need to enable static maps for your API key. [Here is a quick video on how to do this](http://wes.io/khGn).
 
 Once you have the API key, simply place it in your `variables.env` file and restart.
 
@@ -38,6 +69,6 @@ Check out [this answer](https://stackoverflow.com/questions/7948789/mongodb-mong
 
 ## I'm getting a `URIError: URI malformed` error when running `npm start`
 
-Thanks to [Chris Ellinger](https://twitter.com/devoidofgenius) for this: 
+Thanks to [Chris Ellinger](https://twitter.com/devoidofgenius) for this:
 
 > If you’re getting a `URIError: URI malformed` error when running `npm start`, break out your environment variables. Go into `variables.env` and split the URI like this `MONGO_URI=mongodb://host.com:port` `DB_USER=username` and `DB_PASS=password`. Then inside your `start.js` replace `mongoose.connect(process.env.DATABASE)` with `mongoose.connect(process.env.MONGO_URI, {user: process.env.DB_USER, pass: process.env.DB_PASS});`. I had issues connecting to my mongodb because my password contained symbols.
