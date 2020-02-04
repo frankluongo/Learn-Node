@@ -25,7 +25,27 @@ brew services start mongodb-community@4.2
 
 ### 03: Starter Files and Environmental Variables
 
-- Resume at 04:16
+## Module 02: Core Concepts
+
+### 04: Routing
+
+- Check `routes/index.js`
+
+### 05: Templating
+
+- Check `views/layout.pug`
+
+### 06: Template Helpers
+
+- Check `helpers.js` and `app.js`
+
+### 07: Controllers & MVC Pattern
+
+- Added to the `controllers` folder
+
+### 08: Middleware and Error Handling
+
+- Resume at 3:54
 
 ----
 
