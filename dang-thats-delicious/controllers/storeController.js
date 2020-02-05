@@ -5,6 +5,20 @@
 // }
 const mongoose = require('mongoose');
 const Store = mongoose.model('Store');
+const multer = require('multer');
+const multerOptions = {
+  storage: multer.memoryStorage(),
+  fileFilter(_, file, next) {
+    const isPhoto = file.mimetype.startsWith('image/');
+    if (isPhoto) {
+      next(null, true);
+    } else {
+      next({ message: `Please upload a valid image file!` }, false);
+    }
+  }
+}
+const jimp = require('jimp');
+const uuid = require('uuid');
 
 exports.homePage = (_, res) => {
   res.render('index')
@@ -21,6 +35,24 @@ exports.editStore = async (req, res) => {
   // 3. Render edit form
   res.render('editStore', { title: `Edit ${store.name}`, store })
 }
+
+exports.upload = multer(multerOptions).single('photo');
+
+exports.resize = async (req, res, next) => {
+  // check for file
+  if (!req.file) {
+    return next();
+  }
+  const extension = req.file.mimetype.split("/")[1];
+  req.body.photo = `${uuid.v4()}.${extension}`;
+  // Now we resize
+  const photo = await jimp.read(req.file.buffer);
+  await photo.resize(800, jimp.AUTO);
+  await photo.write(`./public/uploads/${req.body.photo}`);
+  // After resizing, keep going
+  next();
+}
+
 
 exports.createStore = async (req, res) => {
   // store
@@ -58,4 +90,15 @@ exports.getStores = async (req, res) => {
   // 1. Query the DB for a list of all stores
   const stores = await Store.find();
   res.render('stores', { title: 'Stores', stores });
+}
+
+
+exports.getStoreBySlug = async (req, res, next) => {
+  // 1. Query the DB for the store
+  const store = await Store.findOne({ slug: req.params.slug });
+  if (!store) {
+    return next();
+  } else {
+    res.render('store', { title: store.name, store });
+  }
 }
