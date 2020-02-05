@@ -47,6 +47,20 @@ brew services start mongodb-community@4.2
 
 - now on flash messages
 
+## Module 03: Database Storage
+
+## Module 04: Control Flow
+
+## Module 05: Geolocation
+
+## Module 06: File Handling & Image Resizing
+
+### 18: Uploading & Resizing Images With Middleware
+
+- On this one
+
+### 19: Routing & Templating Single Stores
+
 ----
 
 [![](http://wes.io/kH9O/wowwwwwwwww.jpg)](https://LearnNode.com)
