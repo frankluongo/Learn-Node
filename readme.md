@@ -45,7 +45,7 @@ brew services start mongodb-community@4.2
 
 ### 08: Middleware and Error Handling
 
-- Resume at 3:54
+- now on flash messages
 
 ----
 
