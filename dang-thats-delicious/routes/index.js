@@ -24,6 +24,8 @@ router.post('/add/:id',
 );
 // router.get('/', storeController.myMiddleware, storeController.homePage);
 
+router.get('/tags', storeController.getStoresByTag);
+router.get('/tags/:tag', storeController.getStoresByTag);
 
 
 
