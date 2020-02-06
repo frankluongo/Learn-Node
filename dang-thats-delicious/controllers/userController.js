@@ -6,10 +6,14 @@ const promisify = require('es6-promisify');
 // Page Controllers
 //
 
-exports.loginForm = (req, res) => {
+exports.account = (req, res) => {
+  res.render('users/account', { title: 'My Account' });
+}
+
+exports.loginForm = (_, res) => {
   res.render('users/login', { title: 'Login' });
 }
-exports.registerForm = (req, res) => {
+exports.registerForm = (_, res) => {
   res.render('users/register', { title: 'Register' });
 }
 
@@ -52,4 +56,30 @@ exports.register = async (req, res, next) => {
   // User.register(user, req.body.password, function (err, user) {
 
   // });
+}
+
+exports.updateAccount = async (req, res, next) => {
+  const updates = {
+    name: req.body.name,
+    email: req.body.email
+  }
+
+  const user = await User.findOneAndUpdate(
+    // Query
+    {
+      _id: req.user._id
+    },
+    // Update
+    {
+      $set: updates
+    },
+    // Options
+    {
+      new: true,
+      runValidators: true,
+      context: 'query'
+    }
+  )
+  req.flash('success', 'Profile Updated!');
+  res.redirect('back');
 }

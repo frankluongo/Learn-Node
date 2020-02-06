@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema({
     type: String,
   }
 })
+
+userSchema.virtual('gravatar').get(function () {
+  const hash = md5(this.email);
+  return `https://gravatar.com/avatar/${hash}?s=200`;
+})
+
 // Pass off Authentication to Passport http://www.passportjs.org/
 userSchema.plugin(passportLocalMongoose, {
   usernameField: 'email'

@@ -1,7 +1,9 @@
 extends ../layout
 
+include ../mixins/_forgot
 include ../mixins/_loginForm
 
 block content
   .inner
     +loginForm()
+    +forgotForm()
