@@ -57,9 +57,13 @@ brew services start mongodb-community@4.2
 
 ### 18: Uploading & Resizing Images With Middleware
 
-- On this one
-
 ### 19: Routing & Templating Single Stores
+
+## Module 08: User Accounts and Authentication
+
+### 27: Password Reset Flow
+
+- Resume at 2:46
 
 ----
 
