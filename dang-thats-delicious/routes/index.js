@@ -58,6 +58,11 @@ router.post('/account/reset/:token',
 )
 
 
+// API Endpoints
+
+router.get('/api/v1/search', catchErrors(storeController.searchStores));
+
+
 
 
 
