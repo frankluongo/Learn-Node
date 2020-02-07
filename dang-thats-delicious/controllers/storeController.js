@@ -31,26 +31,13 @@ exports.editStore = async (req, res) => {
   // 1. Find the store
   const store = await Store.findOne({ _id: req.params.id });
   // 2. confirm they own the store
-  // * TODO
+  // confirmOwner(store, req, res);
+  if (!store.author.equals(req.user._id)) {
+    req.flash('error', 'You must own a store to edit it!');
+    return res.redirect('/stores');
+  }
   // 3. Render edit form
   res.render('editStore', { title: `Edit ${store.name}`, store })
-}
-
-exports.upload = multer(multerOptions).single('photo');
-
-exports.resize = async (req, res, next) => {
-  // check for file
-  if (!req.file) {
-    return next();
-  }
-  const extension = req.file.mimetype.split("/")[1];
-  req.body.photo = `${uuid.v4()}.${extension}`;
-  // Now we resize
-  const photo = await jimp.read(req.file.buffer);
-  await photo.resize(800, jimp.AUTO);
-  await photo.write(`./public/uploads/${req.body.photo}`);
-  // After resizing, keep going
-  next();
 }
 
 
@@ -70,10 +57,13 @@ exports.createStore = async (req, res) => {
   // } catch (err) {
   //   throw new Error(err);
   // }
+  req.body.author = req.user._id;
   const store = await (new Store(req.body)).save();
   req.flash('success', `Successfully Created ${store.name}! Care to leave a review?`);
   res.redirect(`/store/${store.slug}`);
 }
+
+
 exports.updateStore = async (req, res) => {
   // 0. Set location data to be a point
   req.body.location.type = 'Point';
@@ -86,23 +76,21 @@ exports.updateStore = async (req, res) => {
   res.redirect(`/stores/${store._id}/edit`);
 }
 
-exports.getStores = async (req, res) => {
+exports.getStores = async (_, res) => {
   // 1. Query the DB for a list of all stores
   const stores = await Store.find();
   res.render('stores', { title: 'Stores', stores });
 }
 
-
 exports.getStoreBySlug = async (req, res, next) => {
   // 1. Query the DB for the store
-  const store = await Store.findOne({ slug: req.params.slug });
+  const store = await Store.findOne({ slug: req.params.slug }).populate('author');
   if (!store) {
     return next();
   } else {
     res.render('store', { title: store.name, store });
   }
 }
-
 
 exports.getStoresByTag = async (req, res) => {
   const tag = req.params.tag;
@@ -114,4 +102,36 @@ exports.getStoresByTag = async (req, res) => {
   // res.json(tags);
   // res.send('it works!');
   res.render('tags', { title: tag || 'Tags', tags, tag, stores })
+}
+
+//
+// Middlewares
+//
+
+exports.upload = multer(multerOptions).single('photo');
+
+exports.resize = async (req, res, next) => {
+  // check for file
+  if (!req.file) {
+    return next();
+  }
+  const extension = req.file.mimetype.split("/")[1];
+  req.body.photo = `${uuid.v4()}.${extension}`;
+  // Now we resize
+  const photo = await jimp.read(req.file.buffer);
+  await photo.resize(800, jimp.AUTO);
+  await photo.write(`./public/uploads/${req.body.photo}`);
+  // After resizing, keep going
+  next();
+}
+
+//
+// Helpers
+//
+
+function confirmOwner(store, req, res) {
+  if (!store.author.equals(req.user._id)) {
+    req.flash('error', 'You must own a store to edit it!');
+    return res.redirect('/stores');
+  }
 }
